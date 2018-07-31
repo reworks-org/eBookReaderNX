@@ -1,2 +1,3 @@
 # eBookReaderNX
-A Nintendo Switch eBook Reader
+
+eBook Reader for the Nintendo Switch
