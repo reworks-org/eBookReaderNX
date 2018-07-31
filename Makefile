@@ -32,7 +32,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	src src/libs src/libs/tinyxml2 src/libs/litehtml src/libs/litehtml/gumbo
+SOURCES		:=	src src/libs src/libs/tinyxml2 src/libs/litehtml src/libs/litehtml/gumbo src/libs/blzip src/libs/blzip/minizip
 DATA		:=	data
 INCLUDES	:=	include
 EXEFS_SRC	:=	exefs_src
@@ -158,6 +158,10 @@ clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).pfs0 $(TARGET).nso $(TARGET).nro $(TARGET).nacp $(TARGET).elf
 
+
+#---------------------------------------------------------------------------------
+#run:
+#should build homebrew then run with yuzu
 
 #---------------------------------------------------------------------------------
 else
