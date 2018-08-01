@@ -13,20 +13,19 @@
 
 App::App()
 {
-	// Init console.
-	consoleInit(NULL);
-	romfsInit();
-
 	// Initialize SDL2.
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 	TTF_Init();
 
+	// Init console.
+	romfsInit();
+
 	// Set up app.
 	m_window.create("eBook Reader NX");
 
-	// Set default render colour to white.
-	SDL_SetRenderDrawColor(m_window.getRenderer(), 255, 255, 255, 255);
+	// Set default render colour to emerald green, to make sure we know app is working.
+	SDL_SetRenderDrawColor(m_window.getRenderer(), 80, 220, 100, SDL_ALPHA_OPAQUE);
 }
 
 App::~App()
@@ -34,13 +33,13 @@ App::~App()
 	// Clean up app.
 	m_window.destroy();
 
+	// Clean up console.
+	romfsExit();
+
 	// Clean up SDL2.
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
-
-	// Clean up console.
-	romfsExit();
 }
 
 int App::run()
