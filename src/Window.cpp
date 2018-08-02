@@ -16,6 +16,12 @@ void Window::create(const char* title)
 	// Create sdl2 window and renderer, ensuring compatibility with switch, and that window takes up whole switch screen.
 	m_window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_SOFTWARE);
+
+	// Set default render colour to emerald green, to make sure we know app is working.
+	SDL_SetRenderDrawColor(m_window.getRenderer(), 80, 220, 100, SDL_ALPHA_OPAQUE);
+
+	// Set blendmode to blending.
+	SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
 }
 
 void Window::destroy()

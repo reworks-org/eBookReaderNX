@@ -23,9 +23,6 @@ App::App()
 
 	// Set up app.
 	m_window.create("eBook Reader NX");
-
-	// Set default render colour to emerald green, to make sure we know app is working.
-	SDL_SetRenderDrawColor(m_window.getRenderer(), 80, 220, 100, SDL_ALPHA_OPAQUE);
 }
 
 App::~App()
