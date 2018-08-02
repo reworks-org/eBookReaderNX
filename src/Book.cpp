@@ -4,7 +4,6 @@
 /// Apache 2.0 License.
 ///
 
-#include "libs/blzip/BLUnZip.h"
 #include "libs/tinyxml2/tinyxml2.h"
 
 #include "Book.hpp"
@@ -94,4 +93,19 @@ void Book::parse()
     }
 
     // -------------------------------
+}
+
+BLUnZip& Book::getZip()
+{
+    return m_zip;
+}
+
+const Manifest& Book::getManifest() const
+{
+    return m_manifest;
+}
+
+const std::vector<std::string>& Book::getSpine() const
+{
+    return m_spine;
 }

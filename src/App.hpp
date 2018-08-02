@@ -7,7 +7,8 @@
 #ifndef EBRNX_APP_HPP_
 #define EBRNX_APP_HPP_
 
-#include "Window.hpp"
+#include "Textures.hpp"
+#include "SwitchContainer.hpp"
 
 ///
 /// Represents the structure of the application.
@@ -47,11 +48,22 @@ public:
 	///
 	void render();
 
+public:
+	///
+	/// App textures.
+	///
+	static Textures s_textures;
+
 private:
 	///
 	/// Represents the window.
 	///
 	Window m_window;
+
+	///
+	/// Litehtml container for this app.
+	///
+	SwitchContainer m_container;
 };
 
 #endif

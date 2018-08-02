@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "Manifest.hpp"
+#include "libs/blzip/BLUnZip.h"
 
 ///
 /// This class represents a book object.
@@ -33,6 +34,21 @@ public:
 	/// Parse the books content.
 	///
 	void parse();
+
+	///
+	/// Get the internal zip file.
+	///
+	BLUnZip& getZip();
+
+	///
+	/// Retrieve manifest.
+	///
+	const Manifest& getManifest() const;
+
+	///
+	/// Retrieve spine.
+	///
+	const std::vector<std::string>& getSpine() const;
 
 private:
 	///

@@ -25,17 +25,26 @@ public:
 	Texture();
 
 	///
-	/// Defaulted destructor.
+	/// Destructor.
 	///
-	~Texture() = default;
+	~Texture();
 
 	///
-	/// \brief Creates the texture from a jpg or png.
+	/// Creates the texture from a jpg or png.
 	///
 	/// \param window Window object to get renderer from.
 	/// \param file File to create texture from.
 	///
 	void create(Window& window, const char* file);
+
+	///
+	/// Create texture from memory.
+	///
+	/// \param window Window object to get renderer from.
+	/// \param memory Memory to load texture from.
+	/// \param size Size of memory that the texture is being loaded from.
+	///
+	void create(Window& window, void* memory, int size);
 
 	///
 	/// Clean up texture memory.
@@ -50,6 +59,29 @@ public:
 	/// \param y y position to draw to.
 	///
 	void draw(Window& window, int x, int y);
+
+	///
+	/// Draws the texture to the screen.
+	///
+	/// \param window Window to get the renderer from.
+	/// \param src source rectangle.
+	/// \param dest dest rectangle.
+	///
+	void draw(Window& window, SDL_Rect* src, SDL_Rect* dest);
+
+	///
+	/// Get width.
+	///
+	/// \return Width.
+	///
+	int getWidth() const;
+
+	///
+	/// Get height.
+	///
+	/// \return Height.
+	///
+	int getHeight() const;
 
 private:
 	///

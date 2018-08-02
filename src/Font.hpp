@@ -9,6 +9,8 @@
 
 #include <SDL2/SDL_ttf.h>
 
+#include "Window.hpp"
+
 ///
 /// Manages an sdl2 font object.
 ///
@@ -23,9 +25,9 @@ public:
 	Font();
 
 	///
-	/// Defaulted destructor.
+	/// Destructor.
 	///
-	~Font() = default;
+	~Font();
 
 	///
 	/// \brief Creates the texture from a jpg or png.
@@ -40,6 +42,17 @@ public:
 	/// Clean up font memory.
 	///
 	void destroy();
+
+	///
+	/// Renders text to the screen in a convenient function.
+	///
+	/// \param window Window to render to.
+	/// \param text Text to render.
+	/// \param col Colour to draw text in.
+	/// \param x x pos to draw to.
+	/// \param y y pos to draw to.
+	///
+	void renderText(Window* window, const char* text, SDL_Colour col, int x, int y);
 
 	///
 	/// Retrieve internal font.

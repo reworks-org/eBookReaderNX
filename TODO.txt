@@ -1,0 +1,6 @@
+support list markers
+support element borders
+support text transformation - http://site.icu-project.org/
+
+
+make font handling like texture handling

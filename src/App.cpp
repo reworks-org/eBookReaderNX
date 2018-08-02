@@ -11,6 +11,9 @@
 
 #include "App.hpp"
 
+// static definition.
+Textures App::s_textures;
+
 App::App()
 {
 	// Initialize SDL2.
@@ -23,10 +26,14 @@ App::App()
 
 	// Set up app.
 	m_window.create("eBook Reader NX");
+	m_container.setWindow(&m_window);
 }
 
 App::~App()
 {
+	// Clean up textures.
+	App::s_textures.destroy();
+
 	// Clean up app.
 	m_window.destroy();
 
