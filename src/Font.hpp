@@ -10,7 +10,7 @@
 #include <SDL2/SDL_ttf.h>
 
 ///
-/// Manages an sdl2 font object..
+/// Manages an sdl2 font object.
 ///
 class Font
 {
