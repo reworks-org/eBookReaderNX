@@ -150,7 +150,7 @@ all: $(BUILD)
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
-	@echo "cleaning leftovers ..."
+	@echo "cleaning leftovers..."
 	@rm *.elf && rm *.nacp && rm *.nso && rm *.pfs0
 
 #---------------------------------------------------------------------------------
