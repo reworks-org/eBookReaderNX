@@ -1,6 +1,7 @@
 support list markers
 support element borders
-support text transformation - http://site.icu-project.org/
-
+support better text transformation - http://site.icu-project.org/
+support other languages.
 
 make font handling like texture handling
+imporing css does not support css files with the same name in different directories.

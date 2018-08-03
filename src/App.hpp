@@ -7,6 +7,9 @@
 #ifndef EBRNX_APP_HPP_
 #define EBRNX_APP_HPP_
 
+#include <memory>
+
+#include "Book.hpp"
 #include "Textures.hpp"
 #include "SwitchContainer.hpp"
 
@@ -53,6 +56,11 @@ public:
 	/// App textures.
 	///
 	static Textures s_textures;
+
+	///
+	/// The book being read.
+	///
+	static std::unique_ptr<Book> s_book;
 
 private:
 	///

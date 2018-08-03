@@ -13,6 +13,7 @@
 
 // static definition.
 Textures App::s_textures;
+std::unique_ptr<Book> App::s_book;
 
 App::App()
 {

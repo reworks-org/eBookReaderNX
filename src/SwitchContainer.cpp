@@ -262,11 +262,10 @@ void SwitchContainer::set_cursor(const litehtml::tchar_t* cursor)
 
 void SwitchContainer::transform_text(litehtml::tstring& text, litehtml::text_transform tt)
 { 
-	// For now, this is disabled. It is on the todo list.
+	// Temporary code.
 	// Because this is complicated process and the solution below ignores unicode.
 	// Use http://site.icu-project.org/ maybe?
 
-	/*
 	switch (tt)
 	{
 		case litehtml::text_transform::text_transform_capitalize:
@@ -293,27 +292,59 @@ void SwitchContainer::transform_text(litehtml::tstring& text, litehtml::text_tra
 		}
 		break;
 	}
-	*/
 }
 
 void SwitchContainer::import_css(litehtml::tstring& text, const litehtml::tstring& url, litehtml::tstring& baseurl)
 {
-	// https://github.com/litehtml/litehtml/wiki/document_container
+	for (auto& pair : App::s_book->getManifest())
+	{
+		if (pair.second.m_type.find("css") != std::string::npos)
+		{
+			auto posA = pair.second.m_href.find_last_of("/");
+			if (posA != std::string::npos)
+			{
+				posA += 1;				
+			}
+			else
+			{
+				posA = 0;
+			}
+
+			auto posB = pair.second.m_href.find_last_of(".");
+			if (posB != std::string::npos)
+			{
+				posB -= posA;
+			}
+
+			std::string partialKey = pair.second.m_href.substr(posA, posB);
+			// convert to std::string
+			std::string strURL = url;
+
+			if (strURL.find(partialKey) != std::string::npos)
+			{
+				text = App::s_book->getZip().ExtractToString(pair.second.m_href);
+			}
+		}
+	}
 }
 
 void SwitchContainer::set_clip(const litehtml::position& pos, const litehtml::border_radiuses& bdr_radius, bool valid_x, bool valid_y)
 { 
-	
+	// not sure, dont think this is used.
 }
 
 void SwitchContainer::del_clip()
 { 
-	
+	// not sure, dont think this is used.	
 }
 
 void SwitchContainer::get_client_rect(litehtml::position& client) const
-{ 
-	
+{
+	// Fill with switch dimensions.
+	client.x = 0;
+	client.y = 0;
+	client.width = 1280;
+	client.height = 720;
 }
 
 std::shared_ptr<litehtml::element> SwitchContainer::create_element(const litehtml::tchar_t *tag_name, const litehtml::string_map &attributes, const std::shared_ptr<litehtml::document> &doc)
@@ -323,7 +354,20 @@ std::shared_ptr<litehtml::element> SwitchContainer::create_element(const litehtm
 
 void SwitchContainer::get_media_features(litehtml::media_features& media) const
 { 
-	
+	// may need adjustment aswell
+	litehtml::position client;
+	get_client_rect(client);
+
+	// Fill with switch dimensions, and other hardware details.
+	media.type = litehtml::media_type::media_type_screen; // could be handheld instead of screen.
+	media.width = client.width;
+	media.height = client.height;
+	media.device_width = client.width;
+	media.device_height = client.height;
+	media.color = 8; // might be 16 or 32 need to investigate.
+	media.color_index = 256; // ??? might be 255 iono
+	media.monochrome = 0;
+	media.resolution = SWITCH_PPI;
 }
 
 void SwitchContainer::get_language(litehtml::tstring& language, litehtml::tstring& culture) const
@@ -334,5 +378,7 @@ void SwitchContainer::get_language(litehtml::tstring& language, litehtml::tstrin
 
 litehtml::tstring SwitchContainer::resolve_color(const litehtml::tstring& color) const
 { 
+	// this might be used not sure yet, no docs online.
+
 	return "";
 }
