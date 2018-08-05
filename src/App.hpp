@@ -9,6 +9,7 @@
 
 #include <memory>
 
+#include "GUI.hpp"
 #include "Book.hpp"
 #include "Textures.hpp"
 #include "SwitchContainer.hpp"
@@ -64,6 +65,11 @@ public:
 
 private:
 	///
+	/// User Interface for the book reader.
+	///
+	GUI m_gui;
+	
+	///
 	/// Represents the window.
 	///
 	Window m_window;
@@ -72,6 +78,11 @@ private:
 	/// Litehtml container for this app.
 	///
 	SwitchContainer m_container;
+
+	///
+	/// Litehtml context.
+	///
+	litehtml::context m_context;
 };
 
 #endif

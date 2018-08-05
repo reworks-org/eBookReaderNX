@@ -2,6 +2,9 @@ support list markers
 support element borders
 support better text transformation - http://site.icu-project.org/
 support other languages.
-
+render battey in gui
+check code is documented properly
 make font handling like texture handling
 imporing css does not support css files with the same name in different directories.
+better art. seriously.
+draw book onm the side using rendercopyex

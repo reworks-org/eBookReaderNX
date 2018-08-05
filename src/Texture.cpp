@@ -42,7 +42,7 @@ void Texture::create(Window& window, const char* file)
 	m_dest.h = h;
 }
 
-void Texture::create(Window& window, void* memory, int size)
+void Texture::create(Window& window, int size, void* memory)
 {
 	// Retrieve RWops handle.
 	SDL_RWops* rwops = SDL_RWFromMem(memory, size);
@@ -67,6 +67,22 @@ void Texture::create(Window& window, void* memory, int size)
 	m_dest.y = 0;
 	m_dest.w = w;
 	m_dest.h = h;
+}
+
+void Texture::create(Window& window, Font& font, const char* text, SDL_Colour col)
+{
+	// Create surface, then texture from text.		
+	SDL_Surface* surface = TTF_RenderUTF8_Blended(font.getFont(), text, col);
+	m_texture = SDL_CreateTextureFromSurface(window.getRenderer(), surface);
+
+	// Destination to draw to.
+	m_dest.x = 0;
+	m_dest.y = 0;
+	m_dest.w = surface->w;
+	m_dest.h = surface->h;
+
+	// cleanup
+	SDL_FreeSurface(surface);
 }
 
 void Texture::destroy()

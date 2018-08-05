@@ -17,6 +17,11 @@ class SwitchContainer : public litehtml::document_container
 {
 public:
 	///
+	/// Constructor.
+	///
+	SwitchContainer() = default;
+	
+	///
 	/// Destructor.
 	///
 	~SwitchContainer();

@@ -9,7 +9,7 @@
 
 #include <SDL2/SDL_rect.h>
 
-#include "Window.hpp"
+#include "Font.hpp"
 
 ///
 /// Manages an SDL_Texture.
@@ -41,10 +41,20 @@ public:
 	/// Create texture from memory.
 	///
 	/// \param window Window object to get renderer from.
-	/// \param memory Memory to load texture from.
 	/// \param size Size of memory that the texture is being loaded from.
+	/// \param memory Memory to load texture from.
 	///
-	void create(Window& window, void* memory, int size);
+	void create(Window& window, int size, void* memory);
+
+	///
+	/// Create the texture from a font.
+	///
+	/// \param window Window object to get renderer from.
+	/// \param font Font object that determintes font, style and size of text.
+	/// \param text Text to create texture from.
+	/// \param col Colour of text.
+	///
+	void create(Window& window, Font& font, const char* text, SDL_Colour col);
 
 	///
 	/// Clean up texture memory.

@@ -45,7 +45,7 @@ void Textures::loadImagesFromBook(Window& window, Book& book)
 
 			// This is deleted in the destroy() method, or destructor.
 			Texture* texture = new Texture;
-			texture->create(window, static_cast<void*>(buffer), size);
+			texture->create(window, size, static_cast<void*>(buffer));
 
 			m_textures.emplace(pair.second.m_href, texture);
 

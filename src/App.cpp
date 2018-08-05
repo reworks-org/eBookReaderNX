@@ -16,6 +16,7 @@ Textures App::s_textures;
 std::unique_ptr<Book> App::s_book;
 
 App::App()
+:m_gui(&m_window)
 {
 	// Initialize SDL2.
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -75,16 +76,20 @@ void App::event()
 	{
 		m_window.m_open = false;
 	}
+
+	m_gui.event(kDown);
 }
 
 void App::update()
 {
-
+	m_gui.update();
 }
 
 void App::render()
 {
 	m_window.beginRender();
+
+	m_gui.render();
 
 	m_window.endRender();
 }

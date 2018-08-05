@@ -276,7 +276,7 @@ void SwitchContainer::transform_text(litehtml::tstring& text, litehtml::text_tra
 
 		case litehtml::text_transform::text_transform_uppercase:
 		{
-			for (auto i = 0; i < text.length(); ++i)
+			for (long unsigned int i = 0; i < text.length(); ++i)
 			{
 				std::toupper(text[i], std::locale());
 			}
@@ -285,7 +285,7 @@ void SwitchContainer::transform_text(litehtml::tstring& text, litehtml::text_tra
 
 		case litehtml::text_transform::text_transform_lowercase:
 		{
-			for (auto i = 0; i < text.length(); ++i)
+			for (long unsigned int i = 0; i < text.length(); ++i)
 			{
 				std::tolower(text[i], std::locale());
 			}
