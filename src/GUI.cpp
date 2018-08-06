@@ -122,9 +122,9 @@ void GUI::updateBook()
 void GUI::renderMenu()
 {
 	App::s_textures.m_textures["menu"]->draw(*m_window, 0, 0);
-	App::s_textures.m_textures["fileBox"]->draw(*m_window, 476, 250);
-	App::s_textures.m_textures["infoButton"]->draw(*m_window, 116, 620);
-	App::s_textures.m_textures["exitButton"]->draw(*m_window, 476, 620);
+	App::s_textures.m_textures["fileBox"]->draw(*m_window, 426, 314);
+	App::s_textures.m_textures["infoButton"]->draw(*m_window, 256, 620);
+	App::s_textures.m_textures["exitButton"]->draw(*m_window, 896, 620);
 }
 
 void GUI::renderBook()
