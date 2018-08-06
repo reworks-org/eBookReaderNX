@@ -4,29 +4,41 @@
 /// Apache 2.0 License.
 ///
 
-#include <dirent.h>
-#include <sys/stat.h>
-#include <sys/types.h>
+#include <iostream>
+#include <filesystem>
 
 #include "App.hpp" // Includes gui.hpp
 
 GUI::GUI(Window* window)
 :m_window(window), m_isMenu(true)
 {
-	// Load ebooks in directory.
-	// Have to use DIR over std::filesystem, as the latter is C++17.
-	DIR *dir;
-	struct dirent *ent;
-	mkdir("sdmc:/books", 777);
-	dir = opendir("sdmc:/books");
-
-	while ((ent = readdir (dir)) != nullptr	)		
+	// Check that books directory exists, and create it if it does not.
+	if(!std::filesystem::exists("sdmc:/books/"))
 	{
-		m_bookFiles.push_back(ent->d_name);
+		std::filesystem::create_directory("sdmc:/books/");
 	}
-	
-	closedir(dir);
 
+	// Load books from directory recursively.
+	for (auto& entry : std::filesystem::recursive_directory_iterator("sdmc:/books/"))
+	{
+		// Ensure it is a file, we dont want to load directories.
+		if (std::filesystem::is_regular_file(entry))
+		{
+			// Add that entry, by getting the filename from the path of the file.
+			m_bookFiles.push_back(entry.path().filename());
+		}
+	}
+}
+
+GUI::~GUI()
+{	
+	// ensures cleanup.	
+	// if not some condition:
+	// destroy();
+}
+
+void GUI::create()
+{
 	// Load UI textures.
 	Texture* menu = new Texture;
 	Texture* info = new Texture;
@@ -47,7 +59,7 @@ GUI::GUI(Window* window)
 	App::s_textures.m_textures.emplace("fileBox", fileBox);
 }
 
-GUI::~GUI()
+void GUI::destroy()
 {
 }
 

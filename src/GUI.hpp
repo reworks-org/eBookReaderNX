@@ -31,6 +31,16 @@ public:
 	~GUI();
 
 	///
+	/// Load the UI textures and other resources.
+	///
+	void create();
+
+	///
+	/// Clean up the UI.
+	///
+	void destroy();
+
+	///
 	/// Process UI events.
 	///
 	/// \param kDown Events from main event loop.

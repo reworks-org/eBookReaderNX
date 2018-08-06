@@ -29,6 +29,7 @@ App::App()
 	// Set up app.
 	m_window.create("eBook Reader NX");
 	m_container.setWindow(&m_window);
+	m_gui.create();
 }
 
 App::~App()
@@ -37,6 +38,7 @@ App::~App()
 	App::s_textures.destroy();
 
 	// Clean up app.
+	m_gui.destroy();
 	m_window.destroy();
 
 	// Clean up console.
