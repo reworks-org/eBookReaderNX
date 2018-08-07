@@ -73,8 +73,8 @@ void App::event()
 	hidScanInput();	
 	u32 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
 
-	// Plus key exits app.
-	if (kDown & KEY_PLUS)
+	// Keys to exit app.
+	if ((kDown & KEY_PLUS) || (kDown & KEY_MINUS))
 	{
 		m_window.m_open = false;
 	}

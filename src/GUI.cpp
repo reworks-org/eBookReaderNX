@@ -6,11 +6,12 @@
 
 #include <iostream>
 #include <filesystem>
+#include <switch/services/hid.h>
 
 #include "App.hpp" // Includes gui.hpp
 
 GUI::GUI(Window* window)
-:m_window(window), m_isMenu(true)
+:m_index(0), m_curFilePage(1), m_isMenu(true), m_showInfo(false), m_window(window)
 {
 	// Check that books directory exists, and create it if it does not.
 	if(!std::filesystem::exists("sdmc:/books/"))
@@ -31,10 +32,9 @@ GUI::GUI(Window* window)
 }
 
 GUI::~GUI()
-{	
-	// ensures cleanup.	
-	// if not some condition:
-	// destroy();
+{
+	// ensures memory is freed.
+	destroy();
 }
 
 void GUI::create()
@@ -57,10 +57,14 @@ void GUI::create()
 	App::s_textures.m_textures.emplace("exitButton", exitButton);
 	App::s_textures.m_textures.emplace("infoButton", infoButton);
 	App::s_textures.m_textures.emplace("fileBox", fileBox);
+
+	// Create UI font.
+	m_uiFont.create("romfs:/fonts/SourceSansPro-Light.ttf", 18, TTF_STYLE_NORMAL);
 }
 
 void GUI::destroy()
 {
+	m_uiFont.destroy();
 }
 
 void GUI::event(u32 kDown)
@@ -101,7 +105,76 @@ void GUI::render()
 
 void GUI::eventMenu(u32 kDown)
 {
+	if (kDown & KEY_L)
+	{
+		if (!m_showInfo)
+		{
+			m_showInfo = true;
+		}
+		else
+		{
+			m_showInfo = false;
+		}
+	}
 
+	if (kDown & KEY_R)
+	{
+		m_window->m_open = false;
+	}
+
+	if (kDown & KEY_X) 
+	{ 
+		std::string bookToRemove = "sdmc:/books/" + m_bookFiles[m_index + ((10 * m_curFilePage) - 10)];
+		std::filesystem::remove(bookToRemove);
+
+		auto found = std::find(m_bookFiles.begin(), m_bookFiles.end(), bookToRemove);
+		if (found != m_bookFiles.end())
+		{
+			m_bookFiles.erase(found);
+		}
+	}
+
+	if (kDown & KEY_A) 
+	{
+		m_selected = m_bookFiles[m_index + ((10 * m_curFilePage) - 10)];
+	}
+
+	if (kDown & KEY_UP)
+	{
+		--m_index;
+		if (m_index < 0)
+		{
+			m_index = 0;
+		}
+	}
+
+	if (kDown & KEY_DOWN)
+	{ 
+		++m_index;
+		if (m_index > 9)
+		{
+			m_index = 9;
+		}
+
+		int correctPos = m_index + ((10 * m_curFilePage) - 10);
+		if (correctPos >= m_bookFiles.size())
+		{
+			correctPos = m_bookFiles.size() - 1;
+			m_index = correctPos - ((10 * m_curFilePage) - 10);
+		}
+	}
+
+	if (kDown & KEY_LEFT)
+	{
+		--m_curFilePage;
+		m_index = 0;
+	}
+			
+	if (kDown & KEY_RIGHT)
+	{ 
+		++m_curFilePage;
+		m_index = 0;
+	}
 }
 
 void GUI::eventBook(u32 kDown)
@@ -121,10 +194,65 @@ void GUI::updateBook()
 
 void GUI::renderMenu()
 {
-	App::s_textures.m_textures["menu"]->draw(*m_window, 0, 0);
-	App::s_textures.m_textures["fileBox"]->draw(*m_window, 426, 314);
-	App::s_textures.m_textures["infoButton"]->draw(*m_window, 256, 620);
-	App::s_textures.m_textures["exitButton"]->draw(*m_window, 896, 620);
+	if (!m_showInfo)
+	{
+		App::s_textures.m_textures["menu"]->draw(*m_window, 0, 0);
+		App::s_textures.m_textures["fileBox"]->draw(*m_window, 426, 314);
+		App::s_textures.m_textures["infoButton"]->draw(*m_window, 256, 620);
+		App::s_textures.m_textures["exitButton"]->draw(*m_window, 896, 620);
+
+		int baseY = 330; 
+		auto result = std::div(m_bookFiles.size(), 10);
+		int pageCount = 0;
+
+		if (result.quot == 0)
+		{
+			pageCount = 1;
+		}
+		else if (result.quot != 0 && result.rem == 0)
+		{
+			pageCount = result.quot;
+		}
+		else if (result.quot != 0 && result.rem != 0)
+		{
+			pageCount = result.quot + 1;
+		}
+
+		if (m_curFilePage < 1)
+		{
+			m_curFilePage = 1;
+		}
+		else if (m_curFilePage > pageCount)
+		{
+			m_curFilePage = pageCount;
+		}
+
+		int begin = (m_curFilePage * 10) - 10;
+		int end = begin + 10;
+
+		if (begin < 0)
+		{
+			begin = 0;
+		}
+
+		if (end > m_bookFiles.size())
+		{
+			end = m_bookFiles.size();
+		}
+
+		for (int i = begin; i < end; ++i)
+		{
+			m_uiFont.renderText(m_window, m_bookFiles[i].c_str(), SDL_Colour{0, 0, 0, 255}, 504, baseY);
+			baseY += 10;
+		}
+
+		float indexYPos = 330 + (m_index * 10);
+		m_uiFont.renderText(m_window, "->", {0, 0, 0, 255}, 504 - 15, indexYPos);
+	}
+	else
+	{
+		App::s_textures.m_textures["info"]->draw(*m_window, 0, 0);
+	}
 }
 
 void GUI::renderBook()

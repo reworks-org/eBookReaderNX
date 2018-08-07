@@ -10,7 +10,7 @@
 #include <vector>
 #include <switch/types.h>
 
-class Window;
+#include "Font.hpp"
 
 class GUI
 {
@@ -94,14 +94,39 @@ private:
 
 private:
 	///
-	/// Pointer to window.
+	/// Keeps track of the book selected in the menu.
 	///
-	Window* m_window;
+	int m_index;
+
+	///
+	/// Keeps track of current page for book file menu. Starts at 1. I know i know.
+	///
+	int m_curFilePage;
 
 	///
 	///	Is the app in the menu or reading a book.
 	///
 	bool m_isMenu;
+
+	///
+	/// Toggle to show infobox.
+	///
+	bool m_showInfo;
+
+	///
+	/// Pointer to window.
+	///
+	Window* m_window;
+
+	///
+	/// The font for the UI.
+	///
+	Font m_uiFont;
+
+	///
+	/// The currently selected book.
+	///
+	std::string m_selected;
 
 	///
 	/// All the names of the books in the books directory.
