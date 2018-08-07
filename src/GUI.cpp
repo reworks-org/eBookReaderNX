@@ -242,12 +242,12 @@ void GUI::renderMenu()
 
 		for (int i = begin; i < end; ++i)
 		{
-			m_uiFont.renderText(m_window, m_bookFiles[i].c_str(), SDL_Colour{0, 0, 0, 255}, 504, baseY);
-			baseY += 10;
+			m_uiFont.renderText(m_window, m_bookFiles[i].c_str(), SDL_Colour{0, 0, 0, 255}, 494, baseY);
+			baseY += 20;
 		}
 
-		float indexYPos = 330 + (m_index * 10);
-		m_uiFont.renderText(m_window, "->", {0, 0, 0, 255}, 504 - 15, indexYPos);
+		float indexYPos = 330 + (m_index * 20);
+		m_uiFont.renderText(m_window, "->", {0, 0, 0, 255}, 494 - 15, indexYPos);
 	}
 	else
 	{
