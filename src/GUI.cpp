@@ -205,26 +205,24 @@ void GUI::eventBook(u32 kDown)
 	{
 		m_selected = "";
 		m_isMenu = true;
-	}
-}
 
-void GUI::updateMenu()
-{
-	if (m_book != nullptr)
-	{
 		delete m_book;
 		m_book = nullptr;
 	}
 }
 
+void GUI::updateMenu()
+{
+}
+
 void GUI::updateBook()
 {
 	// We render twice, because the first render calculates and returns the optimal page width.
-	int optimal = m_book->m_document->render(720);
-	if(optimal < 720)
-	{
-		m_book->m_document->render(optimal);
-	}
+	//int optimal = m_book->m_document->render(720);
+	//if(optimal < 720)
+	//{
+		//m_book->m_document->render(optimal);
+	//}
 }
 
 void GUI::renderMenu()
@@ -292,6 +290,6 @@ void GUI::renderMenu()
 
 void GUI::renderBook()
 {
-	litehtml::position pos(0, 0, 720, 1280);
-	m_book->m_document->draw(nullptr, 0, 0, &pos);
+	//litehtml::position pos(0, 0, 720, 1280);
+	//m_book->m_document->draw(nullptr, 0, 0, &pos);
 }
