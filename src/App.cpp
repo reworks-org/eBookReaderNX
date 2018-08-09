@@ -28,7 +28,6 @@ App::App()
 
 	// Set up app.
 	m_window.create("eBook Reader NX");
-	m_container.setWindow(&m_window);
 	m_gui.create();
 }
 

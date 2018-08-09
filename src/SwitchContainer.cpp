@@ -6,7 +6,9 @@
 
 #include <locale>
 
-#include "App.hpp" // includes SwitchContainer.hpp
+#include "App.hpp"
+
+#include "SwitchContainer.hpp"
 
 // https://old.reddit.com/r/NintendoSwitch/comments/5oiqn8/nintendo_switchs_ppi_pixels_per_inch_is_actually/
 #define SWITCH_PPI 237.0
@@ -118,14 +120,20 @@ void SwitchContainer::draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t*
 
 	// Convert colour to sdl2.
 	SDL_Colour col;
-	col.r = color.red;
-	col.g = color.green;
-	col.b = color.blue;
-	col.a = color.alpha;
+	//col.r = color.red;
+	//col.g = color.green;
+	//col.b = color.blue;
+	//col.a = color.alpha;
+
+	// for now, assume text is black.
+	col.r = 0;
+	col.g = 0;
+	col.b = 0;
+	col.a = 255;	
 
 	// Draw text.
 	// todo: adjust
-	font->renderText(m_window, text, col, pos.left(), pos.top());
+	font->renderText(m_window, text, col, pos.left(), pos.top(), 90.0);
 }
 
 int SwitchContainer::pt_to_px(int pt)
@@ -135,8 +143,7 @@ int SwitchContainer::pt_to_px(int pt)
 
 int SwitchContainer::get_default_font_size() const
 {
-	// todo: adjust
-	return 12;
+	return 18;
 }
 
 const litehtml::tchar_t* SwitchContainer::get_default_font_name() const
@@ -193,7 +200,7 @@ void SwitchContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::ba
 
 			// Draw background.
 			SDL_SetRenderDrawColor(m_window->getRenderer(), bg.color.red, bg.color.green, bg.color.blue, bg.color.alpha);
-			texture->draw(*m_window, &src, &dest);
+			texture->draw(*m_window, &src, &dest, 90.0);
 		}
 		else
 		{
@@ -205,7 +212,7 @@ void SwitchContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::ba
 
 			// Draw background.
 			SDL_SetRenderDrawColor(m_window->getRenderer(), bg.color.red, bg.color.green, bg.color.blue, bg.color.alpha);
-			texture->draw(*m_window, &src, &dest);
+			texture->draw(*m_window, &src, &dest, 90.0);
 		}
 	}
 	else
@@ -343,8 +350,8 @@ void SwitchContainer::get_client_rect(litehtml::position& client) const
 	// Fill with switch dimensions.
 	client.x = 0;
 	client.y = 0;
-	client.width = 1280;
-	client.height = 720;
+	client.width = 720;
+	client.height = 1280;
 }
 
 std::shared_ptr<litehtml::element> SwitchContainer::create_element(const litehtml::tchar_t *tag_name, const litehtml::string_map &attributes, const std::shared_ptr<litehtml::document> &doc)
@@ -360,10 +367,10 @@ void SwitchContainer::get_media_features(litehtml::media_features& media) const
 
 	// Fill with switch dimensions, and other hardware details.
 	media.type = litehtml::media_type::media_type_screen; // could be handheld instead of screen.
-	media.width = client.width;
-	media.height = client.height;
-	media.device_width = client.width;
-	media.device_height = client.height;
+	media.width = client.height;
+	media.height = client.width;
+	media.device_width = client.height;
+	media.device_height = client.width;
 	media.color = 8; // might be 16 or 32 need to investigate.
 	media.color_index = 256; // ??? might be 255 iono
 	media.monochrome = 0;

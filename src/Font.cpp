@@ -34,7 +34,7 @@ void Font::destroy()
 	}
 }
 
-void Font::renderText(Window* window, const char* text, SDL_Colour col, int x, int y)
+void Font::renderText(Window* window, const char* text, SDL_Colour col, int x, int y, double rotation)
 {
 	// Create surface, then texture from text.		
 	SDL_Surface* surface = TTF_RenderUTF8_Blended(m_font, text, col);
@@ -48,7 +48,7 @@ void Font::renderText(Window* window, const char* text, SDL_Colour col, int x, i
 	dest.h = surface->h;
 
 	// render
-	SDL_RenderCopy(window->getRenderer(), texture, nullptr, &dest);
+	SDL_RenderCopyEx(window->getRenderer(), texture, nullptr, &dest, rotation, nullptr, SDL_FLIP_NONE);
 
 	// cleanup
 	SDL_FreeSurface(surface);

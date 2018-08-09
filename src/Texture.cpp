@@ -94,19 +94,19 @@ void Texture::destroy()
 	}
 }
 
-void Texture::draw(Window& window, int x, int y)
+void Texture::draw(Window& window, int x, int y, double rotation)
 {
 	// Set up destination...
 	m_dest.x = x;
 	m_dest.y = y;
 
 	// ... and draw the texture.
-	SDL_RenderCopy(window.getRenderer(), m_texture, nullptr, &m_dest);
+	SDL_RenderCopyEx(window.getRenderer(), m_texture, nullptr, &m_dest, rotation, nullptr, SDL_FLIP_NONE);
 }
 
-void Texture::draw(Window& window, SDL_Rect* src, SDL_Rect* dest)
+void Texture::draw(Window& window, SDL_Rect* src, SDL_Rect* dest, double rotation)
 {
-	SDL_RenderCopy(window.getRenderer(), m_texture, src, dest);
+	SDL_RenderCopyEx(window.getRenderer(), m_texture, src, dest, rotation, nullptr, SDL_FLIP_NONE);
 }
 
 int Texture::getWidth() const

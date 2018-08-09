@@ -7,4 +7,8 @@ check code is documented properly
 make font handling like texture handling
 imporing css does not support css files with the same name in different directories.
 better art. seriously.
-draw book onm the side using rendercopyex
+draw book on the side using rendercopyex
+introduce servicelocator pattern
+fix manual memory management
+SPLIT UI GUI INTO STRUCTURE:
+	APP -> LIBRARY -> BOOKVIEW, BOOK

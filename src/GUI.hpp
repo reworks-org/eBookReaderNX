@@ -12,6 +12,8 @@
 
 #include "Font.hpp"
 
+class Book;
+
 class GUI
 {
 public:
@@ -122,6 +124,11 @@ private:
 	/// The font for the UI.
 	///
 	Font m_uiFont;
+
+	///
+	/// The current book.
+	///
+	Book* m_book;
 
 	///
 	/// The currently selected book.

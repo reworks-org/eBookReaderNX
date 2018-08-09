@@ -67,8 +67,9 @@ public:
 	/// \param window Window to get the renderer from.
 	/// \param x x position to draw to.
 	/// \param y y position to draw to.
+	/// \param rotation Degrees to rotate the texture by.
 	///
-	void draw(Window& window, int x, int y);
+	void draw(Window& window, int x, int y, double rotation = 0.0);
 
 	///
 	/// Draws the texture to the screen.
@@ -76,8 +77,9 @@ public:
 	/// \param window Window to get the renderer from.
 	/// \param src source rectangle.
 	/// \param dest dest rectangle.
+	/// \param rotation Degrees to rotate the texture by.
 	///
-	void draw(Window& window, SDL_Rect* src, SDL_Rect* dest);
+	void draw(Window& window, SDL_Rect* src, SDL_Rect* dest, double rotation = 0.0);
 
 	///
 	/// Get width.

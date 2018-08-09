@@ -10,7 +10,7 @@ file_list_box.png:
 	Link: https://opengameart.org/content/open-book-0
 	Modifications: None.
 
-romfs/textures/library_menu.png, romfs/textures/library_info.png:
+romfs/textures/library_menu.png, romfs/textures/library_info.png, romfs/textures/loading.png:
 	Author: Ragesoss (presumed).
 	License: Public Domain.
 	Link: https://commons.wikimedia.org/wiki/File:Beinecke_Library_interior_2.JPG

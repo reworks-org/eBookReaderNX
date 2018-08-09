@@ -11,6 +11,9 @@
 
 #include "Manifest.hpp"
 #include "libs/blzip/BLUnZip.h"
+#include "SwitchContainer.hpp"
+
+class Window;
 
 ///
 /// This class represents a book object.
@@ -33,7 +36,9 @@ public:
 	///
 	/// Parse the books content.
 	///
-	void parse();
+	/// \param window Used when loading images.
+	///
+	void parse(Window& window);
 
 	///
 	/// Get the internal zip file.
@@ -49,6 +54,12 @@ public:
 	/// Retrieve spine.
 	///
 	const std::vector<std::string>& getSpine() const;
+
+public:
+	///
+	/// Represents a page.
+	///
+	litehtml::document::ptr m_document;
 
 private:
 	///
@@ -87,9 +98,19 @@ private:
 	Manifest m_manifest;
 
 	///
+	/// Litehtml primary css.
+	///
+	litehtml::context m_context;
+
+	///
 	/// The books spine. I.e. the pages with text on them.
 	///
 	std::vector<std::string> m_spine;
+
+	///
+	/// Litehtml container for this app.
+	///
+	SwitchContainer m_container;
 };
 
 #endif

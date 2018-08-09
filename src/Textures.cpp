@@ -33,8 +33,8 @@ void Textures::loadImagesFromBook(Window& window, Book& book)
 	// Iterate over manifest
 	for (auto& pair : book.getManifest())
 	{
-		// Looking for media-types that contain "image/"
-		if (pair.second.m_type.find("image/") != std::string::npos)
+		// Looking for media-types that contain "image"
+		if (pair.second.m_type.find("image") != std::string::npos)
 		{
 			std::string str = book.getZip().ExtractToString(pair.second.m_href);
 			

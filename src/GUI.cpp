@@ -11,7 +11,7 @@
 #include "App.hpp" // Includes gui.hpp
 
 GUI::GUI(Window* window)
-:m_index(0), m_curFilePage(1), m_isMenu(true), m_showInfo(false), m_window(window)
+:m_index(0), m_curFilePage(1), m_isMenu(true), m_showInfo(false), m_window(window), m_book(nullptr), m_selected("")
 {
 	// Check that books directory exists, and create it if it does not.
 	if(!std::filesystem::exists("sdmc:/books/"))
@@ -45,18 +45,21 @@ void GUI::create()
 	Texture* exitButton = new Texture;
 	Texture* infoButton = new Texture;
 	Texture* fileBox = new Texture;
+	Texture* loading = new Texture;
 
 	menu->create(*m_window, "romfs:/textures/library_menu.png");
 	info->create(*m_window, "romfs:/textures/library_info.png");
 	exitButton->create(*m_window, "romfs:/textures/button_exit.png");
 	infoButton->create(*m_window, "romfs:/textures/button_info.png");
 	fileBox->create(*m_window, "romfs:/textures/file_list_box.png");
+	loading->create(*m_window, "romfs:/textures/loading.png");
 
 	App::s_textures.m_textures.emplace("menu", menu);
 	App::s_textures.m_textures.emplace("info", info);
 	App::s_textures.m_textures.emplace("exitButton", exitButton);
 	App::s_textures.m_textures.emplace("infoButton", infoButton);
 	App::s_textures.m_textures.emplace("fileBox", fileBox);
+	App::s_textures.m_textures.emplace("loading", loading);
 
 	// Create UI font.
 	m_uiFont.create("romfs:/fonts/SourceSansPro-Light.ttf", 18, TTF_STYLE_NORMAL);
@@ -64,6 +67,12 @@ void GUI::create()
 
 void GUI::destroy()
 {
+	if (m_book != nullptr)
+	{
+		delete m_book;
+		m_book = nullptr;
+	}
+
 	m_uiFont.destroy();
 }
 
@@ -137,6 +146,19 @@ void GUI::eventMenu(u32 kDown)
 	if (kDown & KEY_A) 
 	{
 		m_selected = m_bookFiles[m_index + ((10 * m_curFilePage) - 10)];
+
+		m_window->beginRender();
+		
+		App::s_textures.m_textures["loading"]->draw(*m_window, 0, 0);	
+
+		m_window->endRender();
+
+		m_book = new Book(m_selected);
+		m_book->parse(*m_window);
+
+		m_isMenu = false;
+
+		SDL_SetRenderDrawColor(m_window->getRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
 	}
 
 	if (kDown & KEY_UP)
@@ -179,17 +201,27 @@ void GUI::eventMenu(u32 kDown)
 
 void GUI::eventBook(u32 kDown)
 {
-
+	if (kDown & KEY_B) 
+	{
+		m_selected = "";
+		delete m_book;
+		m_book = nullptr;
+		m_isMenu = true;
+	}
 }
 
 void GUI::updateMenu()
 {
-
 }
 
 void GUI::updateBook()
 {
-
+	// We render twice, because the first render calculates and returns the optimal page width.
+	int optimal = m_book->m_document->render(720);
+	if(optimal < 720)
+	{
+		m_book->m_document->render(optimal);
+	}
 }
 
 void GUI::renderMenu()
@@ -257,5 +289,6 @@ void GUI::renderMenu()
 
 void GUI::renderBook()
 {
-
+	litehtml::position pos(0, 0, 720, 1280);
+	m_book->m_document->draw(nullptr, 0, 0, &pos);
 }

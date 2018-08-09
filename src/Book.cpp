@@ -6,20 +6,23 @@
 
 #include "libs/tinyxml2/tinyxml2.h"
 
-#include "Book.hpp"
+#include "App.hpp" // Includes app.
 
 Book::Book(const std::string& book)
-:m_zip("sdmc:/books/" + book)
+:m_document(nullptr), m_zip("sdmc:/books/" + book)
 {
 }
 
 Book::~Book()
 {
+    m_document.reset();
 	m_zip.Close();
 }
 
-void Book::parse()
+void Book::parse(Window& window)
 {
+    m_container.setWindow(&window);
+
 	// Parse Container. This is the same for all 3 of the supported formats.
 	// -------------------------------
 
@@ -93,6 +96,16 @@ void Book::parse()
     }
 
     // -------------------------------
+
+    // Load CSS into context.
+    // Which is actually empty since all ebooks specify all their CSS in their pages, which is handled by the document container.
+    m_context.load_master_stylesheet("");
+
+    // Load images.
+    App::s_textures.loadImagesFromBook(window, *this);
+
+    // prepare document.
+    m_document = litehtml::document::createFromString(m_zip.ExtractToString(m_manifest[m_spine[0]].m_href).c_str(), &m_container, &m_context);
 }
 
 BLUnZip& Book::getZip()

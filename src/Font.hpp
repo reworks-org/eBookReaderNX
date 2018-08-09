@@ -51,8 +51,9 @@ public:
 	/// \param col Colour to draw text in.
 	/// \param x x pos to draw to.
 	/// \param y y pos to draw to.
+	/// \param rotation Rotation of the text.
 	///
-	void renderText(Window* window, const char* text, SDL_Colour col, int x, int y);
+	void renderText(Window* window, const char* text, SDL_Colour col, int x, int y, double rotation = 0.0);
 
 	///
 	/// Retrieve internal font.
