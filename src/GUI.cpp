@@ -204,14 +204,17 @@ void GUI::eventBook(u32 kDown)
 	if (kDown & KEY_B) 
 	{
 		m_selected = "";
-		delete m_book;
-		m_book = nullptr;
 		m_isMenu = true;
 	}
 }
 
 void GUI::updateMenu()
 {
+	if (m_book != nullptr)
+	{
+		delete m_book;
+		m_book = nullptr;
+	}
 }
 
 void GUI::updateBook()
