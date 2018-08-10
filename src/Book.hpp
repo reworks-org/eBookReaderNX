@@ -39,6 +39,15 @@ public:
 	/// \param window Used when loading images.
 	///
 	void parse(Window& window);
+	
+	///
+	/// Changes the current "html" page.
+	///
+	/// \param page number of page in spine.
+	///
+	/// \return Returns pointer to new document. This is a smart pointer, but it doesnt hurt to call reset() before calling this if your updating the page.
+	///
+	litehtml::document::ptr changePage(int page);
 
 	///
 	/// Get the internal zip file.
@@ -54,12 +63,6 @@ public:
 	/// Retrieve spine.
 	///
 	const std::vector<std::string>& getSpine() const;
-
-public:
-	///
-	/// Represents a page.
-	///
-	litehtml::document::ptr m_document;
 
 private:
 	///

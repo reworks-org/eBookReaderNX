@@ -133,7 +133,7 @@ void SwitchContainer::draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t*
 
 	// Draw text.
 	// todo: adjust
-	font->renderText(m_window, text, col, pos.left(), pos.top(), 90.0);
+	font->renderText(m_window, text, col, pos.left(), pos.top());
 }
 
 int SwitchContainer::pt_to_px(int pt)
@@ -200,7 +200,7 @@ void SwitchContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::ba
 
 			// Draw background.
 			SDL_SetRenderDrawColor(m_window->getRenderer(), bg.color.red, bg.color.green, bg.color.blue, bg.color.alpha);
-			texture->draw(*m_window, &src, &dest, 90.0);
+			texture->draw(*m_window, &src, &dest);
 		}
 		else
 		{
@@ -212,7 +212,7 @@ void SwitchContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::ba
 
 			// Draw background.
 			SDL_SetRenderDrawColor(m_window->getRenderer(), bg.color.red, bg.color.green, bg.color.blue, bg.color.alpha);
-			texture->draw(*m_window, &src, &dest, 90.0);
+			texture->draw(*m_window, &src, &dest);
 		}
 	}
 	else
@@ -350,8 +350,8 @@ void SwitchContainer::get_client_rect(litehtml::position& client) const
 	// Fill with switch dimensions.
 	client.x = 0;
 	client.y = 0;
-	client.width = 720;
-	client.height = 1280;
+	client.width = 1280;
+	client.height = 720;
 }
 
 std::shared_ptr<litehtml::element> SwitchContainer::create_element(const litehtml::tchar_t *tag_name, const litehtml::string_map &attributes, const std::shared_ptr<litehtml::document> &doc)
@@ -367,10 +367,10 @@ void SwitchContainer::get_media_features(litehtml::media_features& media) const
 
 	// Fill with switch dimensions, and other hardware details.
 	media.type = litehtml::media_type::media_type_screen; // could be handheld instead of screen.
-	media.width = client.height;
-	media.height = client.width;
-	media.device_width = client.height;
-	media.device_height = client.width;
+	media.width = client.width;
+	media.height = client.height;
+	media.device_width = client.width;
+	media.device_height = client.height;
 	media.color = 8; // might be 16 or 32 need to investigate.
 	media.color_index = 256; // ??? might be 255 iono
 	media.monochrome = 0;
