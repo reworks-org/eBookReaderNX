@@ -8,7 +8,9 @@
 #include <filesystem>
 #include <switch/services/hid.h>
 
-#include "App.hpp" // Includes gui.hpp
+#include "GUI.hpp"
+#include "Locator.hpp"
+#include "Textures.hpp"
 
 GUI::GUI(Window* window)
 :m_index(0), m_curFilePage(1), m_isMenu(true), m_showInfo(false), m_window(window), m_book(nullptr), m_selected("")

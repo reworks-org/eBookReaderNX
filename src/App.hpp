@@ -7,11 +7,8 @@
 #ifndef EBRNX_APP_HPP_
 #define EBRNX_APP_HPP_
 
-#include <memory>
-
 #include "GUI.hpp"
-#include "Book.hpp"
-#include "Textures.hpp"
+#include "Window.hpp"
 
 ///
 /// Represents the structure of the application.
@@ -50,17 +47,6 @@ public:
 	/// Render everything to the screen.
 	///
 	void render();
-
-public:
-	///
-	/// App textures.
-	///
-	static Textures s_textures;
-
-	///
-	/// The book being read.
-	///
-	static std::unique_ptr<Book> s_book;
 
 private:
 	///

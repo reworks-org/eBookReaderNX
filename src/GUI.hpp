@@ -13,6 +13,7 @@
 #include "Font.hpp"
 
 class Book;
+class Window;
 
 class GUI
 {

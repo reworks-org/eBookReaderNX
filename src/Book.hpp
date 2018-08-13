@@ -11,7 +11,6 @@
 
 #include "Manifest.hpp"
 #include "libs/blzip/BLUnZip.h"
-#include "SwitchContainer.hpp"
 
 class Window;
 
@@ -109,11 +108,6 @@ private:
 	/// The books spine. I.e. the pages with text on them.
 	///
 	std::vector<std::string> m_spine;
-
-	///
-	/// Litehtml container for this app.
-	///
-	SwitchContainer m_container;
 };
 
 #endif
