@@ -11,6 +11,7 @@
 
 #include "Manifest.hpp"
 #include "libs/blzip/BLUnZip.h"
+#include "libs/litehtml/litehtml.h"
 
 class Window;
 
@@ -62,6 +63,12 @@ public:
 	/// Retrieve spine.
 	///
 	const std::vector<std::string>& getSpine() const;
+
+public:
+	///
+	/// Litehtml page.
+	///
+	litehtml::document::ptr m_document;
 
 private:
 	///

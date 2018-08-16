@@ -4,9 +4,12 @@
 /// Apache 2.0 License.
 ///
 
+#include "Locator.hpp"
+#include "Textures.hpp"
+#include "SwitchContainer.hpp"
 #include "libs/tinyxml2/tinyxml2.h"
 
-#include "App.hpp" // Includes app.
+#include "Book.hpp"
 
 Book::Book(const std::string& book)
 :m_document(nullptr), m_zip("sdmc:/books/" + book)
@@ -21,8 +24,6 @@ Book::~Book()
 
 void Book::parse(Window& window)
 {
-    m_container.setWindow(&window);
-
 	// Parse Container. This is the same for all 3 of the supported formats.
 	// -------------------------------
 
@@ -99,13 +100,30 @@ void Book::parse(Window& window)
 
     // Load CSS into context.
     // Which is actually empty since all ebooks specify all their CSS in their pages, which is handled by the document container.
-    m_context.load_master_stylesheet("");
+    FILE* mcFile = fopen("romfs:/master.css", "r");
+    fseek(mcFile, 0, SEEK_END);
+    long mcSize = ftell(mcFile);
+    fseek(mcFile, 0, SEEK_SET);
+
+    // Allocate into buffer
+    char* mcCStr = (char*)malloc(mcSize + 1);
+    fread(mcCStr, mcSize, 1, mcFile);
+    fclose(mcFile);
+
+    // Ensure null-terminated and copy into std::string
+    mcCStr[mcSize] = '\0';
+    std::string mcString(mcCStr);
+
+    // Then free buffer.
+    free(mcCStr);
+
+    m_context.load_master_stylesheet(mcString.c_str());
 
     // Load images.
-    App::s_textures.loadImagesFromBook(window, *this);
+    Locator::s_textures.loadImagesFromBook(window, *this);
 
     // prepare document.
-    m_document = litehtml::document::createFromString(m_zip.ExtractToString(m_manifest[m_spine[0]].m_href).c_str(), &m_container, &m_context);
+    m_document = litehtml::document::createFromString(m_zip.ExtractToString(m_manifest[m_spine[0]].m_href).c_str(), &Locator::s_container, &m_context);
 }
 
 BLUnZip& Book::getZip()

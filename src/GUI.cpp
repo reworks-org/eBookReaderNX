@@ -8,12 +8,14 @@
 #include <filesystem>
 #include <switch/services/hid.h>
 
-#include "GUI.hpp"
+#include "Book.hpp"
 #include "Locator.hpp"
 #include "Textures.hpp"
 
+#include "GUI.hpp"
+
 GUI::GUI(Window* window)
-:m_index(0), m_curFilePage(1), m_isMenu(true), m_showInfo(false), m_window(window), m_book(nullptr), m_selected("")
+:m_index(0), m_curFilePage(1), m_isMenu(true), m_showInfo(false), m_window(window), m_selected("")
 {
 	// Check that books directory exists, and create it if it does not.
 	if(!std::filesystem::exists("sdmc:/books/"))
@@ -56,12 +58,12 @@ void GUI::create()
 	fileBox->create(*m_window, "romfs:/textures/file_list_box.png");
 	loading->create(*m_window, "romfs:/textures/loading.png");
 
-	App::s_textures.m_textures.emplace("menu", menu);
-	App::s_textures.m_textures.emplace("info", info);
-	App::s_textures.m_textures.emplace("exitButton", exitButton);
-	App::s_textures.m_textures.emplace("infoButton", infoButton);
-	App::s_textures.m_textures.emplace("fileBox", fileBox);
-	App::s_textures.m_textures.emplace("loading", loading);
+	Locator::s_textures.m_textures.emplace("menu", menu);
+	Locator::s_textures.m_textures.emplace("info", info);
+	Locator::s_textures.m_textures.emplace("exitButton", exitButton);
+	Locator::s_textures.m_textures.emplace("infoButton", infoButton);
+	Locator::s_textures.m_textures.emplace("fileBox", fileBox);
+	Locator::s_textures.m_textures.emplace("loading", loading);
 
 	// Create UI font.
 	m_uiFont.create("romfs:/fonts/SourceSansPro-Light.ttf", 18, TTF_STYLE_NORMAL);
@@ -69,12 +71,6 @@ void GUI::create()
 
 void GUI::destroy()
 {
-	if (m_book != nullptr)
-	{
-		delete m_book;
-		m_book = nullptr;
-	}
-
 	m_uiFont.destroy();
 }
 
@@ -133,71 +129,74 @@ void GUI::eventMenu(u32 kDown)
 		m_window->m_open = false;
 	}
 
-	if (kDown & KEY_X) 
-	{ 
-		std::string bookToRemove = "sdmc:/books/" + m_bookFiles[m_index + ((10 * m_curFilePage) - 10)];
-		std::filesystem::remove(bookToRemove);
+	if (!m_showInfo)
+	{
+		if (kDown & KEY_X) 
+		{ 
+			std::string bookToRemove = "sdmc:/books/" + m_bookFiles[m_index + ((10 * m_curFilePage) - 10)];
+			std::filesystem::remove(bookToRemove);
 
-		auto found = std::find(m_bookFiles.begin(), m_bookFiles.end(), bookToRemove);
-		if (found != m_bookFiles.end())
-		{
-			m_bookFiles.erase(found);
+			auto found = std::find(m_bookFiles.begin(), m_bookFiles.end(), bookToRemove);
+			if (found != m_bookFiles.end())
+			{
+				m_bookFiles.erase(found);
+			}
 		}
-	}
 
-	if (kDown & KEY_A) 
-	{
-		m_selected = m_bookFiles[m_index + ((10 * m_curFilePage) - 10)];
-
-		m_window->beginRender();
-		
-		App::s_textures.m_textures["loading"]->draw(*m_window, 0, 0);	
-
-		m_window->endRender();
-
-		m_book = new Book(m_selected);
-		m_book->parse(*m_window);
-
-		m_isMenu = false;
-
-		SDL_SetRenderDrawColor(m_window->getRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
-	}
-
-	if (kDown & KEY_UP)
-	{
-		--m_index;
-		if (m_index < 0)
+		if (kDown & KEY_A) 
 		{
+			m_selected = m_bookFiles[m_index + ((10 * m_curFilePage) - 10)];
+
+			m_window->beginRender();
+			
+			Locator::s_textures.m_textures["loading"]->draw(*m_window, 0, 0);	
+
+			m_window->endRender();
+
+			Locator::s_book = std::make_unique<Book>(m_selected);
+			Locator::s_book->parse(*m_window);
+
+			SDL_SetRenderDrawColor(m_window->getRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
+
+			m_isMenu = false;
+		}
+
+		if (kDown & KEY_UP)
+		{
+			--m_index;
+			if (m_index < 0)
+			{
+				m_index = 0;
+			}
+		}
+
+		if (kDown & KEY_DOWN)
+		{ 
+			++m_index;
+			if (m_index > 9)
+			{
+				m_index = 9;
+			}
+
+			int correctPos = m_index + ((10 * m_curFilePage) - 10);
+			if (correctPos >= m_bookFiles.size())
+			{
+				correctPos = m_bookFiles.size() - 1;
+				m_index = correctPos - ((10 * m_curFilePage) - 10);
+			}
+		}
+
+		if (kDown & KEY_LEFT)
+		{
+			--m_curFilePage;
 			m_index = 0;
 		}
-	}
-
-	if (kDown & KEY_DOWN)
-	{ 
-		++m_index;
-		if (m_index > 9)
-		{
-			m_index = 9;
+				
+		if (kDown & KEY_RIGHT)
+		{ 
+			++m_curFilePage;
+			m_index = 0;
 		}
-
-		int correctPos = m_index + ((10 * m_curFilePage) - 10);
-		if (correctPos >= m_bookFiles.size())
-		{
-			correctPos = m_bookFiles.size() - 1;
-			m_index = correctPos - ((10 * m_curFilePage) - 10);
-		}
-	}
-
-	if (kDown & KEY_LEFT)
-	{
-		--m_curFilePage;
-		m_index = 0;
-	}
-			
-	if (kDown & KEY_RIGHT)
-	{ 
-		++m_curFilePage;
-		m_index = 0;
 	}
 }
 
@@ -208,8 +207,7 @@ void GUI::eventBook(u32 kDown)
 		m_selected = "";
 		m_isMenu = true;
 
-		delete m_book;
-		m_book = nullptr;
+		Locator::s_book.reset();
 	}
 }
 
@@ -220,21 +218,21 @@ void GUI::updateMenu()
 void GUI::updateBook()
 {
 	// We render twice, because the first render calculates and returns the optimal page width.
-	//int optimal = m_book->m_document->render(720);
-	//if(optimal < 720)
-	//{
-		//m_book->m_document->render(optimal);
-	//}
+	int optimal = Locator::s_book->m_document->render(1280);
+	if(optimal < 1280)
+	{
+		Locator::s_book->m_document->render(optimal);
+	}
 }
 
 void GUI::renderMenu()
 {
 	if (!m_showInfo)
 	{
-		App::s_textures.m_textures["menu"]->draw(*m_window, 0, 0);
-		App::s_textures.m_textures["fileBox"]->draw(*m_window, 426, 314);
-		App::s_textures.m_textures["infoButton"]->draw(*m_window, 256, 620);
-		App::s_textures.m_textures["exitButton"]->draw(*m_window, 896, 620);
+		Locator::s_textures.m_textures["menu"]->draw(*m_window, 0, 0);
+		Locator::s_textures.m_textures["fileBox"]->draw(*m_window, 426, 314);
+		Locator::s_textures.m_textures["infoButton"]->draw(*m_window, 256, 620);
+		Locator::s_textures.m_textures["exitButton"]->draw(*m_window, 896, 620);
 
 		int baseY = 330; 
 		auto result = std::div(m_bookFiles.size(), 10);
@@ -286,12 +284,12 @@ void GUI::renderMenu()
 	}
 	else
 	{
-		App::s_textures.m_textures["info"]->draw(*m_window, 0, 0);
+		Locator::s_textures.m_textures["info"]->draw(*m_window, 0, 0);
 	}
 }
 
 void GUI::renderBook()
 {
-	//litehtml::position pos(0, 0, 720, 1280);
-	//m_book->m_document->draw(nullptr, 0, 0, &pos);
+	litehtml::position pos(0, 0, 1280, 720);
+	Locator::s_book->m_document->draw(nullptr, 0, 0, &pos);
 }

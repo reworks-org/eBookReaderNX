@@ -13,7 +13,6 @@
 #include "Texture.hpp"
 
 // Forward decs:
-
 class Book;
 class Window;
 
@@ -22,7 +21,7 @@ class Window;
 ///
 class Textures
 {
-	friend class App;
+	friend struct Locator;
 public:
 	///
 	/// Destructor.
@@ -63,7 +62,7 @@ public:
 
 private:
 	///
-	/// Private constructor, so class can only be created by Application class.
+	/// Private constructor, so class can only be created by the Locator class.
 	///
 	Textures() = default;
 };

@@ -7,12 +7,12 @@
 #ifndef EBRNX_GUI_HPP_
 #define EBRNX_GUI_HPP_
 
+#include <string>
 #include <vector>
 #include <switch/types.h>
 
 #include "Font.hpp"
 
-class Book;
 class Window;
 
 class GUI
@@ -125,12 +125,7 @@ private:
 	/// The font for the UI.
 	///
 	Font m_uiFont;
-
-	///
-	/// The current book.
-	///
-	Book* m_book;
-
+	
 	///
 	/// The currently selected book.
 	///

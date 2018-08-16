@@ -6,7 +6,9 @@
 
 #include <locale>
 
-#include "App.hpp"
+#include "Book.hpp"
+#include "Locator.hpp"
+#include "Textures.hpp"
 
 #include "SwitchContainer.hpp"
 
@@ -174,7 +176,7 @@ void SwitchContainer::get_image_size(const litehtml::tchar_t* src, const litehtm
 { 
 	// src = src from <img> tag, which is a substring of the href in the manifest, which is identified by the "image/fileextension" in media-type
 	// Pretty self-explainatory function. Finds the texture from a partial or even full key, and then querys it.
-	Texture* texture = App::s_textures.findFromPartial(src);
+	Texture* texture = Locator::s_textures.findFromPartial(src);
 
 	if (texture != nullptr)
 	{
@@ -194,7 +196,7 @@ void SwitchContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::ba
 		{
 			// Retrieve positions and values of what to draw, except for root position is always 0, 0.
 			// Using the src rectangle here may need adjustment.
-			Texture* texture = App::s_textures.findFromPartial(bg.image);
+			Texture* texture = Locator::s_textures.findFromPartial(bg.image);
 			SDL_Rect src = { bg.clip_box.x, bg.clip_box.y, bg.clip_box.width, bg.clip_box.height };
 			SDL_Rect dest = { 0, 0, bg.image_size.width, bg.image_size.height };
 
@@ -206,7 +208,7 @@ void SwitchContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::ba
 		{
 			// Retrieve positions and values of what to draw.
 			// Using the src rectangle here may need adjustment.
-			Texture* texture = App::s_textures.findFromPartial(bg.image);
+			Texture* texture = Locator::s_textures.findFromPartial(bg.image);
 			SDL_Rect src = { bg.clip_box.x, bg.clip_box.y, bg.clip_box.width, bg.clip_box.height };
 			SDL_Rect dest = { bg.position_x, bg.position_y, bg.image_size.width, bg.image_size.height };
 
@@ -303,7 +305,7 @@ void SwitchContainer::transform_text(litehtml::tstring& text, litehtml::text_tra
 
 void SwitchContainer::import_css(litehtml::tstring& text, const litehtml::tstring& url, litehtml::tstring& baseurl)
 {
-	for (auto& pair : App::s_book->getManifest())
+	for (auto& pair : Locator::s_book->getManifest())
 	{
 		if (pair.second.m_type.find("css") != std::string::npos)
 		{
@@ -329,7 +331,7 @@ void SwitchContainer::import_css(litehtml::tstring& text, const litehtml::tstrin
 
 			if (strURL.find(partialKey) != std::string::npos)
 			{
-				text = App::s_book->getZip().ExtractToString(pair.second.m_href);
+				text = Locator::s_book->getZip().ExtractToString(pair.second.m_href);
 			}
 		}
 	}

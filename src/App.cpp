@@ -9,11 +9,11 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 
-#include "App.hpp"
+#include "Locator.hpp"
+#include "Textures.hpp"
+#include "SwitchContainer.hpp"
 
-// static definition.
-Textures App::s_textures;
-std::unique_ptr<Book> App::s_book;
+#include "App.hpp"
 
 App::App()
 :m_gui(&m_window)
@@ -29,12 +29,14 @@ App::App()
 	// Set up app.
 	m_window.create("eBook Reader NX");
 	m_gui.create();
+
+	Locator::s_container.setWindow(&m_window);
 }
 
 App::~App()
 {
 	// Clean up textures.
-	App::s_textures.destroy();
+	Locator::s_textures.destroy();
 
 	// Clean up app.
 	m_gui.destroy();
